@@ -7,7 +7,8 @@ function App() {
   const [contacts, setContact] = useState(data.slice(0, 5));
 
   const deleteContact = (id) => {
-    let deleted = contacts.filter((elem) => elem.id)
+    let deleted = contacts.filter((elem) => elem.id !== id)
+    setContact(deleted)
   }
 
   // const sortByPopularity
@@ -23,10 +24,7 @@ function App() {
     let remaining = data.filter((elem) => !contacts.includes(elem));
     console.log(remaining.length === data.length);
     if (!(remaining.length === data.length)) {
-      let randomIndex = Math.floor(Math.random() * remaining.length);
-      let newArr = [remaining[randomIndex], ...contacts];
-      console.log(newArr.length);
-      setContact([remaining[randomIndex], ...contacts]);
+      setContact([remaining[Math.floor(Math.random() * remaining.length)], ...contacts]);
      } 
      else {
       setContact(contacts);
@@ -40,6 +38,7 @@ function App() {
       <button onClick={addRandomContact}>Add Random Contact</button>
       <button onClick={sortByPopularity}>Sort by Popularity</button>
       <button onClick={sortByName}>Sort by Name</button>
+      
 
       <table>
         <thead>
@@ -49,6 +48,7 @@ function App() {
             <th>Popularity</th>
             <th>Won an Oscar</th>
             <th>Won an Emmy</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -62,6 +62,7 @@ function App() {
                 <td><p>{contact.popularity}</p></td>
                 <td>{contact.wonOscar && <p>🏆</p>}</td>
                 <td>{contact.wonEmmy && <p>🏆</p>}</td>
+                <td><button onClick={() => deleteContact(contact.id)}>Delete</button></td>
               </tr>
             );
           })}
